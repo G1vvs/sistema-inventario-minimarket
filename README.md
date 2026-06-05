@@ -35,7 +35,6 @@ El panel de control calcula de forma automática métricas críticas de negocio 
 * **Backend como Servicio (BaaS):** Supabase (PostgreSQL relacional, Auth Engine, Triggers PL/pgSQL).
 
 ## 📁 Estructura del Proyecto
-
 ```text
 ├── App/
 │   ├── index.html       # Estructura principal de las pestañas y vistas (SPA)
@@ -44,8 +43,7 @@ El panel de control calcula de forma automática métricas críticas de negocio 
 │   └── config.js        # Variables de entorno y llaves de conexión API (Ignorado en Git)
 ├── .gitignore           # Archivo de protección para evitar la fuga de credenciales
 └── README.md            # Documentación del proyecto
-
-
+```
 <img width="1904" height="917" alt="Screenshot 2026-06-05 131524" src="https://github.com/user-attachments/assets/bb9915b2-4da9-41c8-b5a2-4595f9505d78" />
 <img width="1903" height="917" alt="Screenshot 2026-06-05 131517" src="https://github.com/user-attachments/assets/33d2a4b0-3dfe-4d93-91ff-6cc071a18f96" />
 <img width="1903" height="914" alt="Screenshot 2026-06-05 131508" src="https://github.com/user-attachments/assets/eb24e0ee-e021-4f63-9b15-311c17b290c8" />
