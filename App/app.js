@@ -61,20 +61,32 @@ async function dbLoadCategorias() {
 }
 
 async function dbSaveProducto(p){
-  // Busca o crea la categoría
+  // Busca la categoría (maybeSingle no lanza error si no existe)
   let {data:cat} = await _supabase
     .from('inv_categories')
     .select('id')
     .eq('name', p.cat)
-    .single();
+    .maybeSingle();
   if(!cat){
-    const {data:newCat} = await _supabase
+    // No existe: la creamos
+    const {data:newCat, error:insertErr} = await _supabase
       .from('inv_categories')
       .insert({name: p.cat})
       .select('id')
-      .single();
-    cat = newCat;
+      .maybeSingle();
+    if(insertErr){
+      // Si falló por conflicto, buscamos de nuevo
+      const {data:existing} = await _supabase
+        .from('inv_categories')
+        .select('id')
+        .eq('name', p.cat)
+        .maybeSingle();
+      cat = existing;
+    } else {
+      cat = newCat;
+    }
   }
+  if(!cat) throw new Error(`No se pudo obtener la categoría "${p.cat}"`);
   if(p.id){
     // UPDATE
     const {error} = await _supabase
@@ -675,11 +687,13 @@ async function eliminarProducto(id, nombre) {
   }
 }
 
-function actualizarSelectCategorias() {
+async function actualizarSelectCategorias() {
   const sel = document.getElementById("p-cat-select");
   if (!sel) return;
   
-  // Dibujamos las categorías de la base de datos y al final el botón de crear nueva
+  // Siempre recarga desde Supabase para tener categorías actualizadas
+  categorias = await dbLoadCategorias();
+  
   sel.innerHTML = categorias.map(c => `<option value="${c}">${c}</option>`).join("") + 
                   `<option value="___NUEVA___" style="font-weight:bold; color:var(--accent);">+ Escríbelo...</option>`;
 }
