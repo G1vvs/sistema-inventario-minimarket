@@ -286,60 +286,33 @@ function renderProductos(){
 
 function setCat(c){catFiltro=c;renderProductos();}
 
-function editarProd(id) {
-  // 1. Buscamos el producto en el arreglo global
+async function editarProd(id) {
   const p = productos.find(x => x.id === id);
   if (!p) return;
-  
-  // 2. Guardamos el ID para saber que estamos en modo edición
+
   editingId = id;
-  
-  // 3. Rellenamos los campos de texto y números
+
   document.getElementById("p-nombre").value = p.nombre;
   document.getElementById("p-precio").value = p.precio;
   document.getElementById("p-stock").value = p.stock;
   document.getElementById("p-min").value = p.min;
   document.getElementById("p-costo").value = p.costo;
-  
-  // 4. Seleccionamos la categoría correcta buscando por su texto o valor
-  const selectCat = document.getElementById("p-cat-select");
-  const categoriaBuscada = p.cat ? p.cat.trim().toLowerCase() : "";
-  let categoriaEncontrada = false;
 
-  for (let i = 0; i < selectCat.options.length; i++) {
-    const textoOpcion = selectCat.options[i].text.trim().toLowerCase();
-    const valorOpcion = selectCat.options[i].value.trim().toLowerCase();
-
-    // Comparamos todo limpio y en minúsculas
-    if (textoOpcion === categoriaBuscada || valorOpcion === categoriaBuscada) {
-      selectCat.selectedIndex = i;
-      categoriaEncontrada = true;
-      break;
-    }
-  }
-  if (!categoriaEncontrada) {
-    console.warn(`No pude emparejar la categoría "${p.cat}". Revisa que exista en la lista del select.`);
-  }
-
-  // 5. Ocultamos el input de "nueva categoría" por si acaso estaba visible
   const inputNuevaCat = document.getElementById("p-cat-input");
-  if (inputNuevaCat) {
-    inputNuevaCat.style.display = "none";
-    inputNuevaCat.value = "";
-  }
-  
-  // 6. Mostramos la pestaña y subimos la pantalla
-  // (showTab llama a actualizarSelectCategorias que reconstruye el select,
-  //  por eso volvemos a aplicar la categoría DESPUÉS de showTab)
+  if (inputNuevaCat) { inputNuevaCat.style.display = "none"; inputNuevaCat.value = ""; }
+
+  // Recarga categorías frescas ANTES de reconstruir el select
+  categorias = await dbLoadCategorias();
+
   showTab('productos');
 
-  // 7. Re-aplicamos la categoría porque showTab reconstruyó el select
-  const selectCat2 = document.getElementById("p-cat-select");
+  // Aplica la categoría DESPUÉS de que showTab reconstruyó el select
+  const selectCat = document.getElementById("p-cat-select");
   const catBuscada = p.cat ? p.cat.trim().toLowerCase() : "";
-  for (let i = 0; i < selectCat2.options.length; i++) {
-    if (selectCat2.options[i].value.trim().toLowerCase() === catBuscada ||
-        selectCat2.options[i].text.trim().toLowerCase() === catBuscada) {
-      selectCat2.selectedIndex = i;
+  for (let i = 0; i < selectCat.options.length; i++) {
+    if (selectCat.options[i].value.trim().toLowerCase() === catBuscada ||
+        selectCat.options[i].text.trim().toLowerCase() === catBuscada) {
+      selectCat.selectedIndex = i;
       break;
     }
   }
@@ -347,6 +320,10 @@ function editarProd(id) {
   showToast("Producto cargado para editar");
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+  showToast("Producto cargado para editar");
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
 
 async function agregarProducto() {
   const nombre = document.getElementById("p-nombre").value.trim();
