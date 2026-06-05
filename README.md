@@ -44,3 +44,14 @@ El panel de control calcula de forma automática métricas críticas de negocio 
 │   └── config.js        # Variables de entorno y llaves de conexión API (Ignorado en Git)
 ├── .gitignore           # Archivo de protección para evitar la fuga de credenciales
 └── README.md            # Documentación del proyecto
+
+
+<img width="1904" height="917" alt="Screenshot 2026-06-05 131524" src="https://github.com/user-attachments/assets/bb9915b2-4da9-41c8-b5a2-4595f9505d78" />
+<img width="1903" height="917" alt="Screenshot 2026-06-05 131517" src="https://github.com/user-attachments/assets/33d2a4b0-3dfe-4d93-91ff-6cc071a18f96" />
+<img width="1903" height="914" alt="Screenshot 2026-06-05 131508" src="https://github.com/user-attachments/assets/eb24e0ee-e021-4f63-9b15-311c17b290c8" />
+<img width="1899" height="914" alt="Screenshot 2026-06-05 131458" src="https://github.com/user-attachments/assets/f8f04fc5-bbd3-4f59-bccb-b953e859f824" />
+<img width="1901" height="914" alt="Screenshot 2026-06-05 131430" src="https://github.com/user-attachments/assets/755462ea-bf9f-4c49-8b15-5f7a98f081fc" />
+<img width="1904" height="913" alt="Screenshot 2026-06-05 131409" src="https://github.com/user-attachments/assets/53d8009c-296a-43c4-9022-8ba85a001bed" />
+<img width="1903" height="915" alt="Screenshot 2026-06-05 131358" src="https://github.com/user-attachments/assets/2a369a83-a38c-4e73-ae2c-9866611aa61c" />
+<img width="1919" height="1031" alt="Screenshot 2026-06-05 131343" src="https://github.com/user-attachments/assets/95b89679-fe44-4242-8d3a-717c4892f618" />
+<img width="1906" height="918" alt="Screenshot 2026-06-05 131531" src="https://github.com/user-attachments/assets/3b2b0721-d961-4417-8a15-e9ab495f1680" />
