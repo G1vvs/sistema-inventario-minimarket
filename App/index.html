@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almacen Los Nietos — Inventario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div class="logo-name">Almacen<br>Los Nietos</div>
+      <div class="logo-sub">Gestión de inventario</div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="showTab('inicio')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>Inicio</span>
+      </button>
+      <button class="nav-item" onclick="showTab('productos')">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        <span>Productos</span>
+      </button>
+      <button class="nav-item" onclick="showTab('ventas')">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        <span>Ventas</span>
+      </button>
+      <button class="nav-item" onclick="showTab('alertas')" id="nav-alertas">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <span>Alertas</span>
+        <span class="nav-badge" id="badge-count">0</span>
+      </button>
+      <button class="nav-item" onclick="showTab('historial')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Historial</span>
+      </button>
+      <button class="nav-item" onclick="showTab('reportes')">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Reportes</span>
+      </button>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title" id="topbar-title">Inicio</span>
+      <div style="display:flex;align-items:center;gap:14px">
+        <span class="topbar-date" id="topbar-date"></span>
+        <button class="btn" style="font-size:12px;padding:5px 12px" onclick="logout()">Cerrar sesión</button>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- INICIO -->
+      <div id="sec-inicio" class="section active">
+        <div class="metrics" id="metrics-bar"></div>
+        <div class="card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Últimas ventas del día
+          </div>
+          <div id="recientes-list"></div>
+        </div>
+      </div>
+
+      <!-- PRODUCTOS -->
+      <div id="sec-productos" class="section">
+        <div class="card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Agregar / editar producto
+          </div>
+          <div class="form-grid">
+            <div class="form-group"><label>Nombre</label><input type="text" id="p-nombre" placeholder="Ej: Coca Cola 1.5L"></div>
+            <div class="form-group">
+              <label>Categoría</label>
+              <select id="p-cat-select" onchange="toggleCatInput(this.value)">
+                <option value="">Cargando categorías...</option>
+              </select>
+              <input type="text" id="p-cat-input" placeholder="Escribe la nueva categoría..." style="display:none; margin-top:8px;">
+            </div>
+            <div class="form-group"><label>Precio venta ($)</label><input type="number" id="p-precio" placeholder="990"></div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group"><label>Stock actual</label><input type="number" id="p-stock" placeholder="50"></div>
+            <div class="form-group"><label>Stock mínimo (alerta)</label><input type="number" id="p-min" placeholder="10"></div>
+            <div class="form-group"><label>Costo del producto($)</label><input type="number" id="p-costo" placeholder="700"></div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="agregarProducto()">Guardar producto</button></div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            Inventario
+          </div>
+          
+          <div style="margin-bottom: 16px;">
+            <input type="text" id="buscador-productos" placeholder="Buscar producto..." oninput="buscarProducto(this.value)" style="max-width: 350px;">
+          </div>
+
+          <div class="cat-pills" id="cat-pills"></div>
+          <table>
+            <thead><tr>
+              <th style="width:32%">Producto</th>
+              <th style="width:14%">Categoría</th>
+              <th style="width:12%">Precio</th>
+              <th style="width:10%">Costo</th>
+              <th style="width:10%">Stock</th>
+              <th style="width:12%">Estado</th>
+              <th style="width:10%">Acción</th>
+            </tr></thead>
+            <tbody id="tabla-productos"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- VENTAS -->
+      <div id="sec-ventas" class="section">
+        <div class="venta-grid">
+          <div class="card">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Registrar venta
+            </div>
+            <div class="form-group" style="margin-bottom:12px"><label>Producto</label><select id="v-prod"></select></div>
+            <div class="form-grid two">
+              <div class="form-group"><label>Cantidad</label><input type="number" id="v-qty" value="1" min="1"></div>
+              <div class="form-group"><label>Costo del producto ($)</label><input type="number" id="v-precio-unit"></div>
+            </div>
+            <div class="btn-row"><button class="btn btn-primary" onclick="agregarAlCarrito()">Agregar al carrito</button></div>
+          </div>
+          <div class="card">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+              Carrito de venta
+            </div>
+            <div id="carrito-items"></div>
+            <div class="total-row"><span class="total-lbl">Total a cobrar</span><span class="total-val" id="total-venta">$0</span></div>
+            <div class="btn-row" style="margin-top:12px"><button class="btn btn-primary" onclick="confirmarVenta()">✓ Confirmar venta</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALERTAS -->
+      <div id="sec-alertas" class="section">
+        <div class="card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Productos con stock bajo
+          </div>
+          <div id="alertas-list"></div>
+        </div>
+      </div>
+
+      <!-- HISTORIAL -->
+      <div id="sec-historial" class="section">
+        <div class="card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Historial de ventas
+          </div>
+          <div class="chip-row">
+            <button class="chip active" id="chip-hoy" onclick="setChip('hoy')">Hoy</button>
+            <button class="chip" id="chip-semana" onclick="setChip('semana')">Esta semana</button>
+            <button class="chip" id="chip-mes" onclick="setChip('mes')">Este mes</button>
+            <button class="chip" id="chip-custom" onclick="setChip('custom')">Personalizado</button>
+            <span id="custom-dates" style="display:none" class="custom-dates">
+              Desde <input type="date" id="fecha-desde" onchange="renderHistorial()">
+              Hasta <input type="date" id="fecha-hasta" onchange="renderHistorial()">
+            </span>
+          </div>
+          <div class="hist-metrics" id="hist-metrics"></div>
+          <div id="historial-list"></div>
+        </div>
+      </div>
+
+      <!-- REPORTES -->
+      <div id="sec-reportes" class="section">
+        <div class="metrics" id="reporte-metrics"></div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              Ventas por categoría
+            </div>
+            <div class="bar-chart" id="chart-cat"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              Productos más vendidos
+            </div>
+            <div class="bar-chart" id="chart-top"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="dev-footer">
+  <span>Sistema de Inventario v1.0</span>
+  <span>Desarrollado por <a href="https://miportafoliogiovanni.framer.website/" target="_blank" class="dev-link">Giovanni.S</a></span>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
